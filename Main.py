@@ -7,10 +7,10 @@ from modules.sales_manager import menu_ventas
 
 # --- CONFIGURACIÓN DE LA BASE DE DATOS ---
 
-DB_HOST = "127.0.0.1" # Coloque su IP o localhost (root)
+DB_HOST = "HOST DEL PROFESOR" # Coloque su IP o localhost
 DB_USER = "root"
-DB_PASSWORD = "ajedrez20" # Coloque su contraseña
-DB_NAME = "skyeroute_db"
+DB_PASSWORD = "CONTRASEÑA DEL MYSQL DEL PROFESOR" # Coloque su contraseña
+DB_NAME = "skyeroute_ARRUTI" # o el nombre de la base de datos creada por los profes con script en la carpeta base de datos
 
 # --- MENÚ PRINCIPAL DEL PROGRAMA ---
 def main_menu():
