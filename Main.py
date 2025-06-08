@@ -6,8 +6,8 @@ from modules.destination_manager import menu_destinos
 from modules.sales_manager import menu_ventas
 
 # --- CONFIGURACIÓN DE LA BASE DE DATOS ---
-# Estas variables son de configuración y pueden quedarse aquí o ir a un archivo de configuración separado
-DB_HOST = "127.0.0.1" # Coloque su IP o localhost
+
+DB_HOST = "127.0.0.1" # Coloque su IP o localhost (root)
 DB_USER = "root"
 DB_PASSWORD = "ajedrez20" # Coloque su contraseña
 DB_NAME = "skyeroute_db"
