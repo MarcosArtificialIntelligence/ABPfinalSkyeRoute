@@ -192,3 +192,32 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+# Archivos de Python generados
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# Entorno virtual
+.venv/
+venv/
+env/
+
+# Archivos de base de datos local (SQLite, si se usara alguna vez)
+# Aunque usas MySQL, es una buena práctica incluir esto por si acaso.
+*.sqlite3
+*.db
+
+# Archivos de configuración sensible o local
+.env
+*.log
+
+# Archivos de IDEs (por ejemplo, PyCharm, VS Code si no quieres subir su config)
+# Si usas PyCharm:
+.idea/
+# Si usas VS Code:
+.vscode/
+
+# Archivos de MySQL Workbench o de la conexión
+# MySQL Workbench no suele crear archivos que deban ser ignorados en el proyecto de código.
+# Los archivos de conexión son locales a tu máquina.
