@@ -27,7 +27,8 @@ Los profesores deberan crear una base de datos con el script que se encuentra en
 
 
 
-Por las dudas dejo el script aca tambien:
+Por las dudas dejo el script para crear la base de datos aca tambien:
+-- copiar y pegar todo esto en una consulta el MySQL workbench
 -- SQL Script para la creación de la base de datos y tablas de SkyeRoute_DB
 -- Diseñado para ser ejecutado en MySQL Workbench o línea de comandos.
 
@@ -41,7 +42,13 @@ USE skyeroute_ARRUTI;
 -- Esto es útil para evitar errores de orden al crear tablas con FKs o insertar datos.
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 4. Creación de la tabla 'clientes'
+-- 4. Eliminar tablas existentes si ya existen para empezar de cero (RECOMENDADO para pruebas)
+ 
+DROP TABLE IF EXISTS ventas;
+DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS destinos;
+
+-- 5. Creación de la tabla 'clientes'
 CREATE TABLE clientes (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     razon_social VARCHAR(100) NOT NULL,
@@ -73,7 +80,7 @@ CREATE TABLE ventas (
 -- 8. Reactivar la verificación de claves foráneas
 SET FOREIGN_KEY_CHECKS = 1;
 
--- 9. Inserción de datos de prueba iniciales
+-- 9. Inserción de datos de prueba iniciales (solo una vez para cada tabla)
 
 -- Clientes de prueba (5 antiguos, 5 recientes para probar el botón de arrepentimiento)
 INSERT INTO clientes (razon_social, cuit, correo_electronico) VALUES
@@ -96,10 +103,26 @@ INSERT INTO destinos (ciudad, pais, costo_base) VALUES
 ('Roma', 'Italia', 700.00),
 ('Sidney', 'Australia', 1500.00);
 
+-- Ventas de prueba (múltiples escenarios)
+-- Nota: La fecha actual es Domingo, 8 de junio de 2025.
+-- La fecha límite para los 60 días hacia atrás desde hoy sería el 9 de abril de 2025.
 
+-- Ventas ANTIGUAS (no anulables por el botón de arrepentimiento)
 INSERT INTO ventas (id_cliente, id_destino, fecha_venta, costo_venta, estado_venta) VALUES
 ((SELECT id_cliente FROM clientes WHERE razon_social = 'Antigua Data S.A.'), (SELECT id_destino FROM destinos WHERE ciudad = 'París'), '2025-03-01 10:00:00', 850.00, 'Activa'),
-((SELECT id_cliente FROM clientes WHERE razon_social = 'Nuevo Cliente S.A.'), (SELECT id_destino FROM destinos WHERE ciudad = 'Tokio'), NOW(), 1200.00, 'Activa');
+((SELECT id_cliente FROM clientes WHERE razon_social = 'Cliente Viejo SRL'), (SELECT id_destino FROM destinos WHERE ciudad = 'Roma'), '2025-02-15 14:30:00', 700.00, 'Activa'),
+((SELECT id_cliente FROM clientes WHERE razon_social = 'Historico Viajes'), (SELECT id_destino FROM destinos WHERE ciudad = 'Sidney'), '2025-01-20 09:00:00', 1500.00, 'Activa');
+
+-- Ventas RECIENTES (anulables por el botón de arrepentimiento)
+INSERT INTO ventas (id_cliente, id_destino, fecha_venta, costo_venta, estado_venta) VALUES
+((SELECT id_cliente FROM clientes WHERE razon_social = 'Nuevo Cliente S.A.'), (SELECT id_destino FROM destinos WHERE ciudad = 'Tokio'), NOW(), 1200.00, 'Activa'),
+((SELECT id_cliente FROM clientes WHERE razon_social = 'Fresca Empresa SRL'), (SELECT id_destino FROM destinos WHERE ciudad = 'Nueva York'), '2025-06-05 11:00:00', 950.00, 'Activa'), -- Hace 3 días (Viernes, 7 de junio)
+((SELECT id_cliente FROM clientes WHERE razon_social = 'Hoy Mismo Viajes'), (SELECT id_destino FROM destinos WHERE ciudad = 'París'), '2025-05-15 16:00:00', 850.00, 'Activa'),  -- Hace ~24 días
+((SELECT id_cliente FROM clientes WHERE razon_social = 'Actual Aventuras'), (SELECT id_destino FROM destinos WHERE ciudad = 'Tokio'), '2025-04-10 10:00:00', 1200.00, 'Activa'); -- Hace ~59 días (cerca del límite)
+
+-- Venta ya anulada (para probar que no se puede anular dos veces)
+INSERT INTO ventas (id_cliente, id_destino, fecha_venta, costo_venta, estado_venta, fecha_anulacion) VALUES
+((SELECT id_cliente FROM clientes WHERE razon_social = 'Presente Tours'), (SELECT id_destino FROM destinos WHERE ciudad = 'Roma'), '2025-05-01 08:00:00', 700.00, 'Anulada', '2025-05-02 09:00:00');
 
 ------------------------------
 hasta aca el script de la base de datos.
